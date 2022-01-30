@@ -1,9 +1,8 @@
 package com.mrostami.composelearning.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Shapes
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 
 object AppTheme {
 

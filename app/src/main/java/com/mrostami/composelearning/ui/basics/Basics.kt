@@ -51,7 +51,7 @@ fun Conversation(messages: List<Message>) {
 //@Preview(showBackground = true)
 @Composable
 fun MessageCard(msg: Message) {
-    AppTheme(darkMode = false) {
+    AppTheme {
         Box(
             modifier = Modifier
                 .background(color = AppTheme.colors.background)
@@ -65,10 +65,10 @@ fun MessageCard(msg: Message) {
                 val surfaceColor: Color by animateColorAsState(
                     targetValue = if (isSelected) AppTheme.colors.primary else AppTheme.colors.elementBorder
                 )
-                var shoMore: Boolean by remember {
+                var showMore: Boolean by remember {
                     mutableStateOf(false)
                 }
-                val moreText: String = if (shoMore) "${msg.author}" else "Show More"
+                val moreText: String = if (showMore) "${msg.author}" else "Show More"
                 Row(
                     modifier = Modifier
                         .clickable(enabled = true) {
@@ -126,7 +126,7 @@ fun MessageCard(msg: Message) {
                     }
                     OutlinedButton(
                         modifier = Modifier.padding(all = AppTheme.dimensions.paddingLarge),
-                        onClick = { shoMore = !shoMore }) {
+                        onClick = { showMore = !showMore }) {
                         Text(text = moreText)
                     }
                 }
