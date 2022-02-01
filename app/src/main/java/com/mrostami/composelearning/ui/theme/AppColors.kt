@@ -151,8 +151,8 @@ class AppColors (
     }
 }
 
-private val colorLightPrimary = Color(0xFFFFB400)
-private val colorLightPrimaryVariant = Color(0xFFF0AE11)
+private val colorLightPrimary = Color(0xFFCC1BCC)
+private val colorLightPrimaryVariant = Color(0xFFCC1BCC)
 private val colorLightSecondary = Color(0xFF00796B)
 private val colorLightSecondaryVariant = Color(0xFF00796B)
 private val colorLightBackground = Color(0xFFF7F8FA)
@@ -174,8 +174,8 @@ private val colorLightSuccess = Color(0xFF0B7915)
 
 
 
-private val colorDarkPrimary = Color(0xFFFFB300)
-private val colorDarkPrimaryVariant = Color(0xFFF7B315)
+private val colorDarkPrimary = Color(0xFFE427E4)
+private val colorDarkPrimaryVariant = Color(0xFFE427E4)
 private val colorDarkSecondary = Color(0xFF0ABEAA)
 private val colorDarkSecondaryVariant = Color(0xFF0ABEAA)
 private val colorDarkBackground = Color(0xFF1B1C1F)

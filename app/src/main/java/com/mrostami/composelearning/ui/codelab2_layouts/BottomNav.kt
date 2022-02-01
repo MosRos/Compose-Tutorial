@@ -41,14 +41,15 @@ fun HomeScreen() {
             .background(color = AppTheme.colors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
-        Text(
-            text = "Home Screen",
-            style = AppTheme.typography.title,
-            color = AppTheme.colors.textPrimary,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+//        Text(
+//            text = "Home Screen",
+//            style = AppTheme.typography.title,
+//            color = AppTheme.colors.textPrimary,
+//            modifier = Modifier.align(Alignment.CenterHorizontally),
+//            textAlign = TextAlign.Center,
+//            fontSize = 20.sp
+//        )
+        TopicsGrid()
     }
 }
 
