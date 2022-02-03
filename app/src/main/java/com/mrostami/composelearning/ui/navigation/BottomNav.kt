@@ -1,4 +1,4 @@
-package com.mrostami.composelearning.ui.codelab2_layouts
+package com.mrostami.composelearning.ui.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -16,21 +16,31 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.mrostami.composelearning.ui.codelab2_layouts.PostsList
+import com.mrostami.composelearning.ui.codelab2_layouts.TopicsGrid
+import com.mrostami.composelearning.ui.codelab3_state.ToDoLayoutScreen
+import com.mrostami.composelearning.ui.codelab3_state.ToDoViewModel
+import com.mrostami.composelearning.ui.home.HomeLayoutScreen
 import com.mrostami.composelearning.ui.theme.AppTheme
 
-enum class BottomNavItem(var title: String, var icon: ImageVector, var screen_route: String) {
+enum class BottomNavItem(
+    var title: String,
+    var icon: ImageVector,
+    var screen_route: String
+    ) {
 
     Home("Home", Icons.Rounded.Home, "home"),
-    MyNetwork("My Network", Icons.Rounded.PeopleAlt, "my_network"),
-    AddPost("Post", Icons.Rounded.PostAdd, "add_post"),
-    Notification("Notification", Icons.Rounded.Notifications, "notification"),
-    Jobs("Jobs", Icons.Rounded.Work, "jobs")
+    ToDo("ToDo", Icons.Rounded.Task, "to_do"),
+    Feeds("Feeds", Icons.Rounded.RssFeed, "feeds_list"),
+    Topics("Topics", Icons.Rounded.Topic, "topics"),
+//    Jobs("Jobs", Icons.Rounded.Work, "jobs")
 }
 
 @Composable
@@ -41,39 +51,24 @@ fun HomeScreen() {
             .background(color = AppTheme.colors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
-//        Text(
-//            text = "Home Screen",
-//            style = AppTheme.typography.title,
-//            color = AppTheme.colors.textPrimary,
-//            modifier = Modifier.align(Alignment.CenterHorizontally),
-//            textAlign = TextAlign.Center,
-//            fontSize = 20.sp
-//        )
-        TopicsGrid()
+        HomeLayoutScreen()
     }
 }
 
 @Composable
-fun NetworkScreen() {
+fun ToDoScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = AppTheme.colors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
-        Text(
-            text = "My Network Screen",
-            style = AppTheme.typography.title,
-            color = AppTheme.colors.textPrimary,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        ToDoLayoutScreen(viewModel = hiltViewModel<ToDoViewModel>())
     }
 }
 
 @Composable
-fun AddPostScreen() {
+fun FeedsScreen() {
     Box(
         modifier = Modifier
             .padding(bottom = AppTheme.dimensions.bottomNavHeight)
@@ -95,21 +90,14 @@ fun AddPostScreen() {
 
 
 @Composable
-fun NotificationScreen() {
+fun TopicsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = AppTheme.colors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
-        Text(
-            text = "Notification Screen",
-            style = AppTheme.typography.title,
-            color = AppTheme.colors.textPrimary,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        TopicsGrid()
     }
 }
 
@@ -139,18 +127,18 @@ fun NavigationGraph(navController: NavHostController) {
         composable(BottomNavItem.Home.screen_route) {
             HomeScreen()
         }
-        composable(BottomNavItem.MyNetwork.screen_route) {
-            NetworkScreen()
+        composable(BottomNavItem.ToDo.screen_route) {
+            ToDoScreen()
         }
-        composable(BottomNavItem.AddPost.screen_route) {
-            AddPostScreen()
+        composable(BottomNavItem.Feeds.screen_route) {
+            FeedsScreen()
         }
-        composable(BottomNavItem.Notification.screen_route) {
-            NotificationScreen()
+        composable(BottomNavItem.Topics.screen_route) {
+            TopicsScreen()
         }
-        composable(BottomNavItem.Jobs.screen_route) {
-            JobScreen()
-        }
+//        composable(BottomNavItem.Jobs.screen_route) {
+//            JobScreen()
+//        }
     }
 }
 
@@ -159,10 +147,10 @@ fun NavigationGraph(navController: NavHostController) {
 fun BottomNavigation(navController: NavController) {
     val items = listOf(
         BottomNavItem.Home,
-        BottomNavItem.MyNetwork,
-        BottomNavItem.AddPost,
-        BottomNavItem.Notification,
-        BottomNavItem.Jobs
+        BottomNavItem.ToDo,
+        BottomNavItem.Feeds,
+        BottomNavItem.Topics,
+//        BottomNavItem.Jobs
     )
     androidx.compose.material.BottomNavigation(
         backgroundColor = AppTheme.colors.surface,
@@ -204,12 +192,10 @@ fun BottomNavigation(navController: NavController) {
 @Composable
 fun BottomNavigationMainScreenView() {
     val navController = rememberNavController()
-    AppTheme(darkMode = false) {
-        Scaffold(
-            bottomBar = { BottomNavigation(navController = navController) }
-        ) {
+    Scaffold(
+        bottomBar = { BottomNavigation(navController = navController) }
+    ) {
 
-            NavigationGraph(navController = navController)
-        }
+        NavigationGraph(navController = navController)
     }
 }

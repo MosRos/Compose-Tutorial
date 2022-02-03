@@ -5,7 +5,10 @@
     <string name="show_less">Show less</string>
 
     <string name="feed">Feed</string>
-    <string name="search">Search</string>
     <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="topics">Topics</string>
+    <string name="theming">Theming</string>
+    <string name="todo">ToDo</string>
     <string name="profile">Profile</string>
 </resources>

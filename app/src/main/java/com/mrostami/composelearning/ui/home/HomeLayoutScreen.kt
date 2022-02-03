@@ -1,4 +1,4 @@
-package com.mrostami.composelearning.ui.codelab2_layouts
+package com.mrostami.composelearning.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,25 +12,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
-import com.mrostami.composelearning.ui.navigation.BottomNavigationMainScreenView
+import com.mrostami.composelearning.ui.codelab2_layouts.BodyContent
+import com.mrostami.composelearning.ui.codelab2_layouts.CodeLabBottomNav
+import com.mrostami.composelearning.ui.codelab2_layouts.HomeSections
 import com.mrostami.composelearning.ui.theme.AppTheme
 
 @Composable
-fun CodeLab2App() {
-    AppTheme(darkMode = false) {
-        BottomNavigationMainScreenView()
-    }
-}
-
-@Preview
-@Composable
-fun AppContent() {
+fun HomeLayoutScreen() {
     Scaffold(
-        Modifier.background(color = AppTheme.colors.background),
+        Modifier
+            .padding(top = 50.dp)
+            .background(color = AppTheme.colors.background)
+            .fillMaxSize(),
         topBar = {
             TopAppBar(
                 backgroundColor = AppTheme.colors.surface,
@@ -51,37 +46,19 @@ fun AppContent() {
                     }
                 }
             )
-        },
-        bottomBar = {
-            var selectedItem by remember { mutableStateOf(HomeSections.HOME.route) }
-
-            CodeLabBottomNav(
-                tabs = arrayOf(
-                    HomeSections.FEED,
-                    HomeSections.HOME,
-                    HomeSections.SEARCH,
-                    HomeSections.PROFILE
-                ),
-                currentRoute = selectedItem,
-                navigateToRoute = { route ->
-                    selectedItem = route
-                },
-                backgroundColor = AppTheme.colors.surface
-            )
-//            BottomNavigation (
-//                backgroundColor = AppTheme.colors.primary,
-//                elevation = AppTheme.dimensions.appBarElevation
-//                    ){
-//
-//            }
         }
     ) { innerPAdding ->
-        BodyContent(Modifier.padding(innerPAdding))
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(color = AppTheme.colors.background)
+        ){
+            HomeContent(Modifier.padding(innerPAdding))
+        }
     }
 }
 
 @Composable
-fun BodyContent(modifier: Modifier = Modifier) {
+fun HomeContent(modifier: Modifier = Modifier) {
     PhotographerCard()
 }
 
@@ -119,13 +96,5 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
                 Text(text = "3 minutes ago", style = AppTheme.typography.body)
             }
         }
-    }
-}
-
-//@Preview
-@Composable
-fun PhotographerCardPreview() {
-    AppTheme {
-        PhotographerCard()
     }
 }

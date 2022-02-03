@@ -11,9 +11,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ComposeLearning">
+        android:theme="@style/Theme.ComposeLearning"
+        android:name=".MainApp">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ComposeLearning.NoActionBar">
@@ -22,6 +23,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.codelab3_state.ToDoActivity"
+            android:label="ToDo"
+            android:exported="true"
+            android:theme="@style/Theme.ComposeLearning.NoActionBar">
+
         </activity>
     </application>
 

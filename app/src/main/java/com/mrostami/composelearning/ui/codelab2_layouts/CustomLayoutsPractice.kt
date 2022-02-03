@@ -14,59 +14,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.mrostami.composelearning.ui.theme.AppTheme
 
-
-@Composable
-fun Modifier.firstBaselineToTop(
-    firstBaselineToTop: Dp
-) = this.then(
-    layout { measurable, constraints ->
-        val placeable: Placeable = measurable.measure(constraints)
-
-        // check
-        check(placeable[FirstBaseline] != AlignmentLine.Unspecified)
-        val firstBaseline = placeable[FirstBaseline]
-
-        val placeableY = firstBaselineToTop.roundToPx() - firstBaseline
-        val height = placeable.height + placeableY
-
-        layout(placeable.width, height) {
-            placeable.placeRelative(0, placeableY)
-        }
-    }
+val topics = listOf(
+    "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
+    "Design", "Fashion", "Film", "History", "Maths", "Music", "People", "Philosophy",
+    "Religion", "Social sciences", "Technology", "TV", "Writing"
 )
 
-
 @Composable
-fun CustomTextWithPaddingToBaselineNormal(
+fun TopicsGrid(
+    items: List<String> = topics,
     modifier: Modifier = Modifier
 ) {
-    AppTheme {
-        Text(text = "NormalBaselinePadding", Modifier.firstBaselineToTop(16.dp))
-    }
-}
-
-@Composable
-fun MyOwnLayout(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Layout(content = content, modifier = modifier) { measurables, constraints ->
-        val placeables = measurables.map {
-            it.measure(constraints)
-        }
-
-        var yPosition = 0
-
-        layout(constraints.maxWidth, constraints.maxHeight) {
-            // Place children in the parent layout
-            placeables.forEach { placeable ->
-                // Position item on the screen
-                placeable.placeRelative(x = 0, y = yPosition)
-
-                // Record the y co-ord placed up to
-                yPosition += placeable.height
+    Row(
+        modifier = modifier
+            .horizontalScroll(rememberScrollState())
+            .padding(
+                start = AppTheme.dimensions.marginMedium,
+                end = AppTheme.dimensions.marginMedium
+            )
+    ) {
+        StaggeredGridLayout {
+            for (topic in items) {
+                Chip(
+                    text = topic,
+                    modifier = Modifier
+                        .padding(
+                            top = AppTheme.dimensions.marginSmall,
+                            start = AppTheme.dimensions.marginSmall
+                        )
+                )
             }
         }
     }
@@ -137,15 +116,16 @@ fun Chip(
         else
             AppTheme.colors.elementBorder
     )
-
     Card(
-        modifier = modifier,
+        modifier = modifier.background(
+            color = AppTheme.colors.elementBackground
+        ),
         border = BorderStroke(color = borderColor, width = 1.dp),
         shape = AppTheme.shapes.small,
     ) {
         Row(
             modifier = Modifier
-                .clickable(enabled = true, onClick = {selected = !selected})
+                .clickable(enabled = true, onClick = { selected = !selected })
                 .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -165,6 +145,59 @@ fun Chip(
     }
 }
 
+@Composable
+fun Modifier.firstBaselineToTop(
+    firstBaselineToTop: Dp
+) = this.then(
+    layout { measurable, constraints ->
+        val placeable: Placeable = measurable.measure(constraints)
+
+        // check
+        check(placeable[FirstBaseline] != AlignmentLine.Unspecified)
+        val firstBaseline = placeable[FirstBaseline]
+
+        val placeableY = firstBaselineToTop.roundToPx() - firstBaseline
+        val height = placeable.height + placeableY
+
+        layout(placeable.width, height) {
+            placeable.placeRelative(0, placeableY)
+        }
+    }
+)
+
+
+@Composable
+fun CustomTextWithPaddingToBaselineNormal(
+    modifier: Modifier = Modifier
+) {
+    Text(text = "NormalBaselinePadding", Modifier.firstBaselineToTop(16.dp))
+}
+
+@Composable
+fun MyOwnLayout(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        val placeables = measurables.map {
+            it.measure(constraints)
+        }
+
+        var yPosition = 0
+
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            // Place children in the parent layout
+            placeables.forEach { placeable ->
+                // Position item on the screen
+                placeable.placeRelative(x = 0, y = yPosition)
+
+                // Record the y co-ord placed up to
+                yPosition += placeable.height
+            }
+        }
+    }
+}
+
 //@Composable
 //fun ScrollableRow(
 //    modifier: Modifier = Modifier,
@@ -179,68 +212,30 @@ fun Chip(
 //
 //}
 
-val topics = listOf(
-    "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
-    "Design", "Fashion", "Film", "History", "Maths", "Music", "People", "Philosophy",
-    "Religion", "Social sciences", "Technology", "TV", "Writing"
-)
-
 @Composable
-fun TopicsGrid(
-    items: List<String> = topics,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-            .padding(
-                start = AppTheme.dimensions.marginMedium,
-                end = AppTheme.dimensions.marginMedium
-            )
-//            .constrainAs(staggeredGrid) {
-//                top.linkTo(customColumn.bottom, margin = 16.dp)
-//                start.linkTo(parent.start, margin = 16.dp)
-//                end.linkTo(parent.end, margin = 16.dp)
-//                bottom.linkTo(parent.bottom, margin = 50.dp)
-//                width = Dimension.preferredWrapContent
-//                height = Dimension.preferredWrapContent
-//            }
+fun ConstraintPractice() {
+        ConstraintLayout(modifier = Modifier
+            .padding(top = 55.dp)
+            .fillMaxSize()
     ) {
-        StaggeredGridLayout {
-            for (topic in items) {
-                Chip(
-                    text = topic,
-                    modifier = Modifier
-                        .padding(
-                            top = AppTheme.dimensions.marginSmall,
-                            start = AppTheme.dimensions.marginSmall
-                        )
-                )
+        val (customText, customColumn, staggeredGrid) = createRefs()
+
+        CustomTextWithPaddingToBaselineNormal(modifier = Modifier.constrainAs(customText) {
+            top.linkTo(parent.top, margin = 16.dp)
+            start.linkTo(parent.start, margin = 16.dp)
+            end.linkTo(parent.end, margin = 16.dp)
+        })
+        MyOwnLayout(
+            modifier = Modifier.constrainAs(customColumn) {
+                top.linkTo(customText.bottom, margin = 16.dp)
+                start.linkTo(parent.start, margin = 16.dp)
+                end.linkTo(parent.end, margin = 16.dp)
             }
+        ) {
+            Text(text = "Text1")
+            Text(text = "Text2")
+            Text(text = "Text3")
+            Text(text = "Text4")
         }
     }
-//    ConstraintLayout(modifier = Modifier
-//        .padding(top = 55.dp)
-//        .fillMaxSize()
-//    ) {
-//        val (customText, customColumn, staggeredGrid) = createRefs()
-//
-//        CustomTextWithPaddingToBaselineNormal(modifier = Modifier.constrainAs(customText) {
-//            top.linkTo(parent.top, margin = 16.dp)
-//            start.linkTo(parent.start, margin = 16.dp)
-//            end.linkTo(parent.end, margin = 16.dp)
-//        })
-//        MyOwnLayout(
-//            modifier = Modifier.constrainAs(customColumn) {
-//                top.linkTo(customText.bottom, margin = 16.dp)
-//                start.linkTo(parent.start, margin = 16.dp)
-//                end.linkTo(parent.end, margin = 16.dp)
-//            }
-//        ) {
-//            Text(text = "Text1")
-//            Text(text = "Text2")
-//            Text(text = "Text3")
-//            Text(text = "Text4")
-//        }
-//    }
 }
