@@ -26,7 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.mrostami.composelearning.R
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.appColors
 import kotlinx.coroutines.launch
 
 
@@ -62,7 +63,7 @@ fun PostsList(names: List<String> = List(300) { "$it" }) {
             modifier = Modifier
                 .padding(all = AppTheme.dimensions.marginMedium)
                 .align(alignment = Alignment.BottomEnd),
-            backgroundColor = AppTheme.colors.primary
+            backgroundColor = MaterialTheme.appColors.primary
         ) {
             var upOrDownIcon: ImageVector =
                 if (isAtTop) Icons.Filled.ArrowDownward else Icons.Filled.ArrowUpward
@@ -74,7 +75,7 @@ fun PostsList(names: List<String> = List(300) { "$it" }) {
 @Composable
 fun Greeting(name: String) {
     Card(
-        backgroundColor = AppTheme.colors.surface,
+        backgroundColor = MaterialTheme.appColors.surface,
         modifier = Modifier.padding(
             horizontal = AppTheme.dimensions.marginMedium,
             vertical = AppTheme.dimensions.paddingLarge
@@ -109,8 +110,8 @@ fun CardContent(name: String) {
         Surface(
             modifier = Modifier.size(55.dp),
             shape = CircleShape,
-            color = AppTheme.colors.elementBackground,
-            border = BorderStroke(width = 1.dp, color = AppTheme.colors.elementBorder)
+            color = MaterialTheme.appColors.elementBackground,
+            border = BorderStroke(width = 1.dp, color = MaterialTheme.appColors.elementBorder)
         ) {
             Image(
                 painter = rememberImagePainter(
@@ -128,19 +129,19 @@ fun CardContent(name: String) {
         ) {
             Text(
                 text = "Hello, ",
-                color = AppTheme.colors.textPrimary,
+                color = MaterialTheme.appColors.textPrimary,
                 style = AppTheme.typography.title
             )
             Text(
                 text = name,
-                color = AppTheme.colors.textSecondary,
+                color = MaterialTheme.appColors.textSecondary,
                 style = AppTheme.typography.h1
             )
             if (expanded) {
                 Text(
                     text = ("Composem ipsum color sit lazy, " +
                             "padding theme elit, sed do bouncy. ").repeat(4),
-                    color = AppTheme.colors.textSecondary,
+                    color = MaterialTheme.appColors.textSecondary,
                     style = AppTheme.typography.body
                 )
             }
@@ -153,7 +154,7 @@ fun CardContent(name: String) {
                 } else {
                     stringResource(R.string.show_more)
                 },
-                tint = AppTheme.colors.icon
+                tint = MaterialTheme.appColors.icon
             )
         }
     }

@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.mrostami.composelearning.R
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
 
 data class Message(val author: String, val body: String)
 

@@ -1,4 +1,4 @@
-package com.mrostami.composelearning.ui.theme
+package com.mrostami.composelearning.ui.codelab4_theming
 
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle

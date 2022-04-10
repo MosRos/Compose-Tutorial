@@ -42,7 +42,7 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mrostami.composelearning.R
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
 
 fun NavGraphBuilder.addHomeGraph(
     onSnackSelected: (Long, NavBackStackEntry) -> Unit,

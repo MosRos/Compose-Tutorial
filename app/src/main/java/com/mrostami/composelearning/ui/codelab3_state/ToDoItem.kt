@@ -1,6 +1,7 @@
 package com.mrostami.composelearning.ui.codelab3_state
 
 data class ToDoItem(
+    val id: Long,
     val title: String,
     val position: Int,
     val status: ToDoStatus = ToDoStatus.TODO,

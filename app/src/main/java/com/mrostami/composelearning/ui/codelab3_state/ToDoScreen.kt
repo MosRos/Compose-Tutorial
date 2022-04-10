@@ -6,7 +6,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -19,9 +18,7 @@ import androidx.compose.material.icons.rounded.Save
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.TextLayoutInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -30,8 +27,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mrostami.composelearning.R
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.appColors
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class ToDoActivity : AppCompatActivity() {
@@ -43,7 +42,7 @@ class ToDoActivity : AppCompatActivity() {
         setContent {
             AppTheme(darkMode = true) {
                 androidx.compose.material.Surface(
-                    color = AppTheme.colors.background
+                    color = MaterialTheme.appColors.background
                 ) {
                     ToDoLayoutScreen(viewModel = viewModel)
                 }
@@ -54,7 +53,7 @@ class ToDoActivity : AppCompatActivity() {
 
 @Composable
 fun ToDoLayoutScreen(viewModel: ToDoViewModel) {
-    val items: List<ToDoItem> by viewModel.toDoItemsState.collectAsState(initial = listOf())
+    val items: List<ToDoItem> = viewModel.todoItems
     ToDoContentScreen(
         modifier = Modifier
             .fillMaxSize()
@@ -75,7 +74,12 @@ fun ToDoContentScreen(
     updateItem: (ToDoItem) -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(all = AppTheme.dimensions.marginMedium)
+        modifier = modifier.padding(
+            top = AppTheme.dimensions.marginMedium,
+            start = AppTheme.dimensions.marginMedium,
+            end = AppTheme.dimensions.marginMedium,
+            bottom = 100.dp
+        )
     ) {
         LazyColumn(state = rememberLazyListState()) {
             items(items) {
@@ -84,27 +88,7 @@ fun ToDoContentScreen(
                 }
             }
         }
-
-        Button(
-            modifier = Modifier
-                .padding(top = AppTheme.dimensions.marginLarge)
-                .align(alignment = Alignment.CenterHorizontally),
-            onClick = {
-                addItem.invoke(
-                    ToDoItem(
-                        title = "NewItem",
-                        position = items.size + 1,
-                        status = ToDoStatus.TODO,
-                        priority = ToDoPriority.NORMAL
-                    )
-                )
-            }
-        ) {
-            Text(text = "Add ToDo")
-        }
-
-        TodoAddItemView(onItemComplete = {})
-
+        TodoAddItemView(onItemComplete = addItem)
     }
 }
 
@@ -119,11 +103,7 @@ fun ToDoItemView(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                start = AppTheme.dimensions.marginMedium,
-                top = AppTheme.dimensions.marginMedium,
-                end = AppTheme.dimensions.marginMedium
-            )
+            .padding(all = AppTheme.dimensions.marginMedium)
     ) {
 
         Checkbox(
@@ -135,6 +115,7 @@ fun ToDoItemView(
             checked = toDo.status == ToDoStatus.DONE,
             onCheckedChange = {
                 val updatedToDo = ToDoItem(
+                    id = toDo.id,
                     title = toDo.title,
                     position = toDo.position,
                     status = ToDoStatus.DONE,
@@ -151,7 +132,7 @@ fun ToDoItemView(
                 .weight(1.0f),
             text = toDo.title,
             style = AppTheme.typography.title,
-            color = AppTheme.colors.textPrimary,
+            color = MaterialTheme.appColors.textPrimary,
             textAlign = TextAlign.Start,
             maxLines = 1
         )
@@ -166,7 +147,7 @@ fun ToDoItemView(
                     isExpanded = !isExpanded
                 }),
             imageVector = Icons.Default.MoreVert,
-            colorFilter = ColorFilter.tint(color = AppTheme.colors.textSecondary),
+            colorFilter = ColorFilter.tint(color = MaterialTheme.appColors.textSecondary),
             contentDescription = "menu"
         )
         DropdownMenu(
@@ -179,7 +160,7 @@ fun ToDoItemView(
             DropdownMenuItem(onClick = { removeItem.invoke(toDo) }) {
                 Text(
                     text = "Delete",
-                    color = AppTheme.colors.error,
+                    color = MaterialTheme.appColors.error,
                     style = AppTheme.typography.caption
                 )
                 Icon(imageVector = Icons.Rounded.Delete, contentDescription = "deleteIcon")
@@ -188,7 +169,7 @@ fun ToDoItemView(
             DropdownMenuItem(onClick = { removeItem.invoke(toDo) }) {
                 Text(
                     text = "Delete",
-                    color = AppTheme.colors.error,
+                    color = MaterialTheme.appColors.error,
                     style = AppTheme.typography.caption
                 )
                 Icon(imageVector = Icons.Rounded.Delete, contentDescription = "deleteIcon")
@@ -197,6 +178,7 @@ fun ToDoItemView(
             DropdownMenuItem(
                 onClick = {
                     val updatedToDo = ToDoItem(
+                        id = toDo.id,
                         title = toDo.title,
                         position = toDo.position,
                         status = ToDoStatus.DOING,
@@ -206,7 +188,7 @@ fun ToDoItemView(
                 }) {
                 Text(
                     text = "Finish",
-                    color = AppTheme.colors.textSecondary,
+                    color = MaterialTheme.appColors.textSecondary,
                     style = AppTheme.typography.caption
                 )
                 Icon(imageVector = Icons.Rounded.Save, contentDescription = "saveIcon")
@@ -218,40 +200,44 @@ fun ToDoItemView(
 @Composable
 fun TodoAddItemView(onItemComplete: (ToDoItem) -> Unit) {
     val (text, setText) = remember { mutableStateOf("") }
-    Column {
-        Row(
-            Modifier
-                .padding(horizontal = 16.dp)
-                .padding(top = 16.dp)
-        ) {
-            TodoInputTextField(
-                text = text,
-                onTextChange = setText,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp)
-            )
-            TodoEditButton(
-                onClick = { /* todo */ },
-                text = "Add",
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-        }
+    Column(
+        Modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp)
+    ) {
+        TodoInputTextField(
+            modifier = Modifier.fillMaxWidth(),
+            text = text,
+            onTextChange = setText
+        )
+        TodoEditButton(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                val todo = ToDoItem(
+                    id = System.currentTimeMillis(),
+                    title = text,
+                    position = 0
+                )
+                onItemComplete.invoke(todo)
+            },
+            enabled = text.isNotEmpty(),
+            text = "Add"
+        )
     }
 }
 
 @Composable
 fun TodoInputTextField(
+    modifier: Modifier,
     text: String,
-    onTextChange: (String) -> Unit,
-    modifier: Modifier
+    onTextChange: (String) -> Unit
 ) {
-    OutlinedTextField(
+    TextField(
         modifier = modifier,
         value = text,
         onValueChange = onTextChange,
         textStyle = TextStyle(
-            color = AppTheme.colors.textPrimary,
+            color = MaterialTheme.appColors.textPrimary,
             fontFamily = FontFamily(
                 Font(R.font.raleway_medium, FontWeight.Medium)
             ),
@@ -264,12 +250,12 @@ fun TodoInputTextField(
 // edit TodoItemInput
 @Composable
 fun TodoEditButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {
 //        onItemComplete(TodoItem(text)) // send onItemComplete event up
 //        setText("") // clear the internal text
     },
     text: String = "Add",
-    modifier: Modifier = Modifier,
     enabled: Boolean = text.isNotBlank() // enable if text is not blank
 ) {
     Button(

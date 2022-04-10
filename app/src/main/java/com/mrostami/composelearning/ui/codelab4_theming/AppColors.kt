@@ -1,11 +1,8 @@
-package com.mrostami.composelearning.ui.theme
+package com.mrostami.composelearning.ui.codelab4_theming
 
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 
 class AppColors (
@@ -320,4 +317,5 @@ val LightColorPalette2 = lightColors(
     onSurface = appLightColors().onSurface,
 )
 
-var LocalColors = staticCompositionLocalOf { appLightColors() }
+
+val LocalColors = compositionLocalOf { appLightColors() }

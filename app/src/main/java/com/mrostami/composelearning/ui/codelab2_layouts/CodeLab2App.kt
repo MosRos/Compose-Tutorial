@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.mrostami.composelearning.ui.navigation.BottomNavigationMainScreenView
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
 
 @Composable
 fun CodeLab2App() {

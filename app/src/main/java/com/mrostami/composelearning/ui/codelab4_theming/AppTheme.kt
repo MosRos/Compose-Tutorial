@@ -1,8 +1,9 @@
-package com.mrostami.composelearning.ui.theme
+package com.mrostami.composelearning.ui.codelab4_theming
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Shapes
 import androidx.compose.runtime.*
+import com.mrostami.composelearning.ui.theme.AppShapes
 
 object AppTheme {
 
@@ -48,9 +49,9 @@ fun AppTheme(
             LightColorPalette2
     // Explicitly creating a new object here so we don't mutate the initial [colors]
     // provided, and overwrite the values set in it.
-    val rememberedColors = remember { themeColors.copy() }.apply { updateColorsFrom(themeColors) }
+//    val rememberedColors = remember { themeColors.copy() }.apply { updateColorsFrom(themeColors) }
     CompositionLocalProvider(
-        LocalColors provides rememberedColors,
+        LocalColors provides themeColors,
         LocalDimensions provides dimensions,
         LocalTypography provides typography,
         staticCompositionLocalOf { AppShapes } provides shapes
@@ -58,9 +59,13 @@ fun AppTheme(
         MaterialTheme(
             colors = materialThemeColors,
             shapes = AppShapes,
-            typography = Typography,
             content = content
         )
-        content()
+//        content()
     }
 }
+
+val MaterialTheme.appColors: AppColors
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalColors.current

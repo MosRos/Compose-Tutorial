@@ -5,6 +5,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +16,8 @@ import androidx.compose.ui.layout.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.appColors
 
 val topics = listOf(
     "Arts & Crafts", "Beauty", "Books", "Business", "Comics", "Culinary",
@@ -114,11 +116,11 @@ fun Chip(
         targetValue = if (selected)
             Color.Magenta
         else
-            AppTheme.colors.elementBorder
+            MaterialTheme.appColors.elementBorder
     )
     Card(
         modifier = modifier.background(
-            color = AppTheme.colors.elementBackground
+            color = MaterialTheme.appColors.elementBackground
         ),
         border = BorderStroke(color = borderColor, width = 1.dp),
         shape = AppTheme.shapes.small,
@@ -139,7 +141,7 @@ fun Chip(
             Text(
                 text = text,
                 style = AppTheme.typography.subtitle,
-                color = AppTheme.colors.textSecondary
+                color = MaterialTheme.appColors.textSecondary
             )
         }
     }

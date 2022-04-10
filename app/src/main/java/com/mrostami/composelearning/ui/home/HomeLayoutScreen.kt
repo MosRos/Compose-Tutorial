@@ -17,22 +17,26 @@ import coil.compose.rememberImagePainter
 import com.mrostami.composelearning.ui.codelab2_layouts.BodyContent
 import com.mrostami.composelearning.ui.codelab2_layouts.CodeLabBottomNav
 import com.mrostami.composelearning.ui.codelab2_layouts.HomeSections
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.appColors
 
 @Composable
 fun HomeLayoutScreen() {
+
+    var tabState by remember { mutableStateOf(HomeTabs.Home) }
+
     Scaffold(
         Modifier
             .padding(top = 50.dp)
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .fillMaxSize(),
         topBar = {
             TopAppBar(
-                backgroundColor = AppTheme.colors.surface,
+                backgroundColor = MaterialTheme.appColors.background,
                 title = {
                     Text(
                         text = "Hi",
-                        color = AppTheme.colors.textPrimary,
+                        color = MaterialTheme.appColors.textPrimary,
                         style = AppTheme.typography.title
                     )
                 },
@@ -40,7 +44,7 @@ fun HomeLayoutScreen() {
                     IconButton(onClick = { }) {
                         Icon(
                             Icons.Filled.Favorite,
-                            tint = AppTheme.colors.icon,
+                            tint = MaterialTheme.appColors.icon,
                             contentDescription = null
                         )
                     }
@@ -50,15 +54,21 @@ fun HomeLayoutScreen() {
     ) { innerPAdding ->
         Box(modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
         ){
-            HomeContent(Modifier.padding(innerPAdding))
+            HomeContent(
+                selectedTab = tabState,
+                modifier = Modifier.padding(innerPAdding)
+            )
         }
     }
 }
 
 @Composable
-fun HomeContent(modifier: Modifier = Modifier) {
+fun HomeContent(
+    selectedTab: HomeTabs,
+    modifier: Modifier = Modifier
+) {
     PhotographerCard()
 }
 
@@ -69,14 +79,14 @@ fun PhotographerCard(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(all = AppTheme.dimensions.paddingMedium)
             .clip(shape = AppTheme.shapes.medium)
-            .background(color = AppTheme.colors.surface)
+            .background(color = MaterialTheme.appColors.surface)
             .clickable(onClick = {})
             .padding(all = AppTheme.dimensions.paddingLarge)
     ) {
         Surface(
             modifier = Modifier.size(64.dp),
             shape = CircleShape,
-            color = AppTheme.colors.elementBackground
+            color = MaterialTheme.appColors.elementBackground
         ) {
             Image(
                 painter = rememberImagePainter(

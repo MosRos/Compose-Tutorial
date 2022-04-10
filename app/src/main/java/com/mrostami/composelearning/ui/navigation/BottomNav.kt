@@ -2,10 +2,7 @@ package com.mrostami.composelearning.ui.navigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
@@ -28,7 +25,8 @@ import com.mrostami.composelearning.ui.codelab2_layouts.TopicsGrid
 import com.mrostami.composelearning.ui.codelab3_state.ToDoLayoutScreen
 import com.mrostami.composelearning.ui.codelab3_state.ToDoViewModel
 import com.mrostami.composelearning.ui.home.HomeLayoutScreen
-import com.mrostami.composelearning.ui.theme.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.AppTheme
+import com.mrostami.composelearning.ui.codelab4_theming.appColors
 
 enum class BottomNavItem(
     var title: String,
@@ -48,7 +46,7 @@ fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
         HomeLayoutScreen()
@@ -60,7 +58,7 @@ fun ToDoScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
         ToDoLayoutScreen(viewModel = hiltViewModel<ToDoViewModel>())
@@ -73,13 +71,13 @@ fun FeedsScreen() {
         modifier = Modifier
             .padding(bottom = AppTheme.dimensions.bottomNavHeight)
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
 //        Text(
 //            text = "Add Post Screen",
-//            style = AppTheme.typography.title,
-//            color = AppTheme.colors.textPrimary,
+//            style = _root_ide_package_.androidx.compose.material.MaterialTheme.appColors.title,
+//            color = _root_ide_package_.androidx.compose.material.MaterialTheme.appColors.textPrimary,
 //            modifier = Modifier.align(Alignment.CenterHorizontally),
 //            textAlign = TextAlign.Center,
 //            fontSize = 20.sp
@@ -94,7 +92,7 @@ fun TopicsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
         TopicsGrid()
@@ -107,7 +105,7 @@ fun JobScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = AppTheme.colors.background)
+            .background(color = MaterialTheme.appColors.background)
             .wrapContentSize(align = Alignment.Center)
     ) {
         Text(
@@ -153,8 +151,8 @@ fun BottomNavigation(navController: NavController) {
 //        BottomNavItem.Jobs
     )
     androidx.compose.material.BottomNavigation(
-        backgroundColor = AppTheme.colors.surface,
-        contentColor = AppTheme.colors.success
+        backgroundColor = MaterialTheme.appColors.surface,
+        contentColor = MaterialTheme.appColors.success
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -168,8 +166,8 @@ fun BottomNavigation(navController: NavController) {
                         maxLines = 1
                     )
                 },
-                selectedContentColor = AppTheme.colors.primary,
-                unselectedContentColor = AppTheme.colors.icon,
+                selectedContentColor = MaterialTheme.appColors.primary,
+                unselectedContentColor = MaterialTheme.appColors.icon,
                 alwaysShowLabel = false,
                 selected = currentRoute == item.screen_route,
                 onClick = {
